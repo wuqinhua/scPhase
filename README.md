@@ -1,13 +1,22 @@
 # scPhase: Exploring phenotype-related single-cells through attention-enhanced representation learning
 
-**scPhase** treats each patient sample as a bag of single cells, learning a comprehensive representation from their gene expression profiles. By incorporating a Mixture-of-Experts (MoE) aggregation layer, it predicts clinical phenotypes that generalize across patient cohorts. Furthermore, it includes an interpretability framework that uses cellular attention and gene attribution scores to pinpoint the key cell profiles that drive its predictions. scPhase consists of several components:
-- An instance encoder
-- A LinFormer attention module
-- A Mixture-of-Experts-based attention Multiple Instance Learning (MoE-MIL) module
-- A domain adaptation module
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/release/python-380/)
+
+**scPhase** is a deep learning framework designed to predict clinical phenotypes from single-cell RNA-sequencing (scRNA-seq) data. It treats each patient sample as a "bag" of single cells and uses a Multiple Instance Learning (MIL) approach to learn a comprehensive representation of their gene expression profiles.
+
+The model incorporates several key architectural components to enhance performance and generalizability across diverse patient cohorts, including:
+* An **Instance Encoder** with a multi-layer perceptron to learn rich gene representations.
+* A **LinFormer Attention** module to efficiently capture inter-cellular relationships.
+* A **Mixture-of-Experts (MoE) based MIL Aggregation** layer for robustly weighting cell importance.
+* A **Domain Adaptation** module with a gradient reversal layer to mitigate batch effects.
+
+Furthermore, scPhase includes a built-in interpretability framework that uses cellular attention and gene attribution scores (via Integrated Gradients) to identify the key cells and genes driving the phenotype predictions.
 
 The manuscript has been pre-printed in bioRxiv:
 > Qinhua Wu, Junxiang Ding, Ruikun He, Lijian Hui, Junwei Liu, Yixue Li. Exploring phenotype-related single-cells through attention-enhanced representation learning. *bioRxiv* (2024). [https://doi.org/10.1101/2024.10.31.619327](https://doi.org/10.1101/2024.10.31.619327)
+
+![The scPhase Framework]("https://github.com/wuqinhua/scPhase/blob/main/notebooks/The%20scPhase%20framwork.png")
 
 #
 
