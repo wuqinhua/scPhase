@@ -37,7 +37,7 @@ The scPhase workflow follows four main steps:
 
 First, clone the repository to your local machine:
 ```bash
-git clone [https://github.com/wuqinhua/scPhase.git](https://github.com/wuqinhua/scPhase.git)
+git clone https://github.com/wuqinhua/scPhase.git
 cd scPhase
 ```
 
@@ -47,21 +47,21 @@ pip install -r requirements.txt
 ```
 
 ***
----
+
 ## Dataset Requirements
 
-PHASE requires single-cell expression data to be provided as an `anndata` object in the `h5ad` format. Before initiating the training process, the dataset must undergo preprocessing, which includes the following steps:
+scPhase requires input data to be a single **`.h5ad`** file, which is a standard format for `scanpy` and `anndata`. The `AnnData` object within this file must be preprocessed and contain the following columns in its `.obs` attribute:
 
 1. **Extraction of highly variable genes**: Identify and retain the genes（default：5000） with the highest variability across cells.
 2. **UMAP computation**: Generate a two-dimensional representation of the data for visualization and clustering.
 3. **Cell annotation**: Annotate cell types based on the dataset, either through automated methods or manual annotation, as appropriate.
 
-To ensure compatibility, **consistent naming** must be used within the `anndata` object for the following key pieces of information:
-- **Sample IDs**: Store in `adata.obs["sample_id"]`.
-- **Phenotypes**: Store in `adata.obs["phenotype"]`.
-- **Cell types**: Store in `adata.obs["celltype"]`.
+Note：
+* **Sample ID**: A column identifying which sample (e.g., patient) each cell belongs to.
+* **Phenotype Label**: A column containing the clinical phenotype for each sample.
+* **Batch Information**: A column indicating the batch, study, or cohort for each sample, which is used for domain adaptation.
 
-For detailed instructions on preprocessing and standardizing the dataset, as well as examples, please refer to the provided notebook: [preprocess_demo.ipynb](https://github.com/wuqinhua/PHASE/blob/main/Desktop/PHASE/Preprocess_demo.ipynb).
+The names of these columns can be specified in the `config.json` file.
 
 ***
 
