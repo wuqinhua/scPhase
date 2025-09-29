@@ -50,60 +50,93 @@ pip install -r requirements.txt
 
 ## Dataset Requirements
 
-scPhase requires input data to be a single **`.h5ad`** file, which is a standard format for `scanpy` and `anndata`. The `AnnData` object within this file must be preprocessed and contain the following columns in its `.obs` attribute:
+scPhase requires your single-cell data to be provided as a single, preprocessed **`.h5ad` file**. The `AnnData` object within this file must contain specific metadata in its `.obs` attribute for the model to function correctly.
 
-1. **Extraction of highly variable genes**: Identify and retain the genes（default：5000） with the highest variability across cells.
-2. **UMAP computation**: Generate a two-dimensional representation of the data for visualization and clustering.
-3. **Cell annotation**: Annotate cell types based on the dataset, either through automated methods or manual annotation, as appropriate.
+#### Required `AnnData` Structure
 
-Note：
-* **Sample ID**: A column identifying which sample (e.g., patient) each cell belongs to.
-* **Phenotype Label**: A column containing the clinical phenotype for each sample.
-* **Batch Information**: A column indicating the batch, study, or cohort for each sample, which is used for domain adaptation.
+The `.obs` DataFrame of your `AnnData` object must include the following columns:
 
-The names of these columns can be specified in the `config.json` file.
+* **Sample ID**: A column that identifies which sample or patient each cell belongs to. The default expected name is `sample_id`.
+* **Phenotype**: A column containing the clinical outcome for each sample. This can be a categorical label for classification or a continuous value for regression. The default expected name is `phenotype`.
+* **Batch**: A column indicating the batch, study, or cohort for each sample. This is used by the domain adaptation module to correct for technical variations. The default expected name is `batch`.
+
+You can easily customize these default column names in the `data_params` section of your `config.json` file.
+
+#### Recommended Preprocessing Workflow
+
+To prepare your data into the required format, we recommend the following workflow:
+
+1.  **Feature Selection**: The model expects a fixed number of input features. First, identify a set of highly variable genes (HVGs) from your dataset. The default input dimension for the model is **5000 HVGs**. Your final `adata.X` matrix should be subsetted to contain only these genes.
+2.  **Cell Type Annotation**: Annotating your cells with their respective types (e.g., T-cells, B-cells) is crucial for the downstream interpretation of the model's results. These annotations should be stored in an `.obs` column.
+3.  **UMAP Computation**: While not used for training, computing a UMAP embedding is necessary for visualizing the cell attention scores generated during the interpretation phase. The result should be stored in `adata.obsm['X_umap']`.
+
 
 ***
 
 ## Usages
 
-### Command Line Arguments
+The entire workflow is controlled by the `run.py` script and a central `config.json` file.
 
-The following table lists the command line arguments available for training the model:
+### Step 1: Configure Your Experiment
 
-| Abbreviation | Parameter      | Description                                                       |
-|--------------|----------------|-------------------------------------------------------------------|
-| -t           | --type         | Type of task: classification or regression.                       |
-| -p           | --path         | Path to the dataset.                                              |
-| -r           | --result       | Path to the directory where results will be saved.                |
-| -e           | --epoch        | Number of training epochs (default: 100).                         |
-| -l           | --learningrate | Learning rate for the optimizer (default: 0.00001).               |
-| -d           | --devices      | List of GPU device IDs to use for training (default: first GPU).  |
+Before running, edit `config.json` to match your data and experimental setup. The most important parameters to change are:
 
-Each argument is required unless a default value is specified.
+| Parameter               | Section         | Description                                                               |
+| ----------------------- | --------------- | ------------------------------------------------------------------------- |
+| `data_h5ad_file`        | `path_params`   | **Required**: The absolute path to your input `.h5ad` data file.      |
+| `RESULTS_DIR`           | `path_params`   | **Required**: Path to the directory where all output files will be saved.      |
+| `MODEL_NAME`            | `path_params`   | A name for your experiment (e.g., "COVID19", "Aging").                    |
+| `sample_col`            | `data_params`   | The column name in `.obs` for sample IDs.                             |
+| `label_col`             | `data_params`   | The column name in `.obs` for phenotype labels.                         |
+| `batch_col`             | `data_params`   | The column name in `.obs` for batch/cohort information.                |
+| `device_model`          | `run_params`    | The primary GPU for the model (e.g., "cuda:0").                           |
+| `device_encoder`        | `run_params`    | A secondary GPU for the attention encoder (can be the same as `device_model`). |
+| `task_type`             | `run_params`    | The prediction task type: `classification` or `regression`.               |
 
-### Example
+### Step 2: Run the Workflow
+
+Use the command line to execute either the cross-validation (training) or the interpretation analysis.
+
+#### To Run Cross-Validation Training:
+This command trains the model using the cross-validation strategy defined in `run_cv.py`. It uses Leave-One-Group-Out if multiple batches are detected; otherwise, it uses k-fold CV.
+
 ```bash
-PHASEtrain -t classification -p /home/user/PHASE/demo_covid.h5ad -r /home/user/PHASE/result -e 100 -l 0.00001 -d 2
+python run.py --config config.json --cv
 ```
-***
 
-## Reproduction
+#### To Run Interpretation Analysis:
+This command must be run **after** training is complete. It loads the saved models from each fold and computes ensemble interpretability results.
 
-- **Data Preprocessing**: The folder contains preprocessing scripts and notebooks, including single-cell integration and annotation, available for both [COVID-19](https://github.com/wuqinhua/PHASE/tree/main/COVID19/1_Data_preprocess) and [Age](https://github.com/wuqinhua/PHASE/tree/main/Age/1_Data_preprocess) datasets.
-
-- **Model Training**: Details of model training can be found in the [COVID-19 Model Training](https://github.com/wuqinhua/PHASE/blob/main/COVID19/2_Model/2.1.2_Model_Training.py) and [Age Model Training](https://github.com/wuqinhua/PHASE/blob/main/Age/2_Model/2.3_Model_training.py) scripts.
-
-- **Attribution Analysis**: 
-  - For COVID-19 data, gene attribution scores can be computed using [COVID-19 Attribution Group PHASE](https://github.com/wuqinhua/PHASE/blob/main/COVID19/2_Model/2.2.1_attribution_group_PHASE.py) and [COVID-19 Attribution Sample PHASE](https://github.com/wuqinhua/PHASE/blob/main/COVID19/2_Model/2.2.2_attribution_sample_PHASE.py). Visualization of results is available in the [COVID-19 Attribution Analysis Notebook](https://github.com/wuqinhua/PHASE/blob/main/COVID19/3_Analysis/3.1_Attribution_analysis.ipynb).
-  - For Age data, gene attribution scores can be computed using [Age Attribution PHASE](https://github.com/wuqinhua/PHASE/blob/main/Age/2_Model/2.4_Attribution_PHASE.py), and result visualization is available in the [Age Attribution Analysis Notebook](https://github.com/wuqinhua/PHASE/blob/main/Age/3_Analysis/3.2_Attention_analysis.ipynb).
-
-- **Attention Analysis**: 
-  - For COVID-19 data, cell attention scores can be computed using [COVID-19 Attention PHASE](https://github.com/wuqinhua/PHASE/blob/main/COVID19/2_Model/2.3_attention_cell_PHASE.py), and result visualization is available in the [COVID-19 Attention Analysis Notebook](https://github.com/wuqinhua/PHASE/blob/main/COVID19/3_Analysis/3.2_Attention_analysis.ipynb).
-  - For Age data, cell attention scores can be computed using [Age Attention PHASE](https://github.com/wuqinhua/PHASE/blob/main/Age/2_Model/2.5_Attention_PHASE.py), and result visualization is available in the [Age Attention Analysis Notebook](https://github.com/wuqinhua/PHASE/blob/main/Age/3_Analysis/3.2_Attention_analysis.ipynb).
-
-- **Conjoint Analysis**: Details are available in the [COVID-19 Conjoint Analysis Notebook](https://github.com/wuqinhua/PHASE/blob/main/COVID19/3_Analysis/3.3_Conjoint_analysis.ipynb) and the [Age Conjoint Analysis Notebook](https://github.com/wuqinhua/PHASE/blob/main/Age/3_Analysis/3.3_Conjoint_analysis.ipynb).
+```bash
+python run.py --config config.json --interpret
+```
 
 ***
 
-This repository will be continuously updated during the submission process.
+## Interpreting the Output
+
+All results are saved in the directory specified by `RESULTS_DIR`. Key outputs include:
+
+* **Trained Models**: The best model from each CV fold is saved as `BestModel_{MODEL_NAME}_Fold{N}.pt`.
+* **Performance Metrics**:
+    * `AllFolds_{MODEL_NAME}.csv`: Detailed performance metrics for each validation fold.
+    * `Summary_{MODEL_NAME}.csv`: Aggregated performance (mean ± std) across all folds.
+* **Interpretability Results**:
+    * `ensemble_gene_attributions_{phenotype}.csv` / `.pdf`: Tables and bar plots of the top-ranked genes associated with each phenotype.
+    * `ensemble_adata_with_attention.h5ad`: An `AnnData` object with the mean cell attention scores from all folds saved in `.obs['attention_weight_mean']`.
+    * `UMAP Plots (*.pdf)`: UMAP visualizations colored by cell type and cell attention, revealing which cells the model focused on for its predictions.
+    * `sample_gene_attribution_mean.csv`: A sample-by-gene matrix of mean attribution scores across folds, useful for downstream analysis like GSEA.
+
+***
+
+## Citation
+
+If you use scPhase in your research, please cite our manuscript:
+
+> Qinhua Wu, Junxiang Ding, Ruikun He, Lijian Hui, Junwei Liu, Yixue Li. Exploring phenotype-related single-cells through attention-enhanced representation learning. *bioRxiv* (2024). https://doi.org/10.1101/2024.10.31.619327
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
