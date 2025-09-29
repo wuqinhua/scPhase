@@ -22,19 +22,15 @@ The manuscript has been pre-printed in bioRxiv:
 
 ***
 
-## The scPhase pipeline
+## Workflow Overview
 
-1. **Predict clinical phenotypes from scRNA-seq data**
-   - 1.1 Data preprocessing: Encode the data into a format that can be read by PHASE.
-   - 1.2 Gene feature embedding: Extract and represent gene features.
-   - 1.3 Self-attention (SA): Learn cell embeddings.
-   - 1.4 Attention-based deep multiple instance learning (AMIL): aggregate all single-cell information within a sample.
+The scPhase workflow follows four main steps:
+
+1.  **Data Preparation**: Format your scRNA-seq data into the required `.h5ad` file.
+2.  **Configuration**: Edit the `config.json` file to specify paths and model parameters.
+3.  **Execution**: Run cross-validation and interpretation analysis from the command line.
+4.  **Result Interpretation**: A range of downstream biological analyses, including gene attribution, pathway enrichment, cell attention analysis, and conjoint analysis to link cellular and molecular drivers of phenotypes.
    
-2. **Provide interpretability of key phenotype-related features**
-   - 2.1 Attribution analysis: Use Integrated Gradients (IG) to link genes to phenotypes via attribution scores.
-   - 2.2 Attention analysis: Use AMIL attention scores to relate individual cells to the phenotype.
-   - 2.3 Conjoint analysis: Correlate top genes' expression levels with cells' attention scores to reveal gene-cell contributions to the phenotype.
-
 ***
 
 ## Installation
