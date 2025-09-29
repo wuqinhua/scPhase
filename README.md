@@ -92,6 +92,7 @@ Before running, edit `config.json` to match your data and experimental setup. Th
 | `device_model`          | `run_params`    | The primary GPU for the model (e.g., "cuda:0").                           |
 | `device_encoder`        | `run_params`    | A secondary GPU for the attention encoder (can be the same as `device_model`). |
 | `task_type`             | `run_params`    | The prediction task type: `classification` or `regression`.               |
+| `n_classes`             | `model_params`  |Number of prediction output classes. E.g., 3 for a 3-class classification task, or 1 for regression. |
 
 ### Step 2: Run the Workflow
 
