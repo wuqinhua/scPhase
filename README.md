@@ -11,7 +11,7 @@ The manuscript has been pre-printed in bioRxiv:
 
 #
 
-<img src="https://github.com/wuqinhua/scPhase/blob/main/The%20scPhase%20framwork.png" alt="架构图" width="800"/>
+<img src="https://github.com/wuqinhua/scPhase/blob/main/notebooks/The%20scPhase%20framwork.png" alt="架构图" width="800"/>
 
 ***
 
