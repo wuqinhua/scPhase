@@ -123,9 +123,10 @@ All results are saved in the directory specified by `RESULTS_DIR`. Key outputs i
     * `Summary_{MODEL_NAME}.csv`: Aggregated performance (mean ± std) across all folds.
 * **Interpretability Results**:
     * `ensemble_gene_attributions_{phenotype}.csv` / `.pdf`: Tables and bar plots of the top-ranked genes associated with each phenotype.
+    * `sample_gene_attribution_mean.csv`: A sample-by-gene matrix of mean attribution scores across folds.
     * `ensemble_adata_with_attention.h5ad`: An `AnnData` object with the mean cell attention scores from all folds saved in `.obs['attention_weight_mean']`.
     * `UMAP Plots (*.pdf)`: UMAP visualizations colored by cell type and cell attention, revealing which cells the model focused on for its predictions.
-    * `sample_gene_attribution_mean.csv`: A sample-by-gene matrix of mean attribution scores across folds, useful for downstream analysis like GSEA.
+
 
 ***
 
