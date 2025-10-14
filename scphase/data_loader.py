@@ -121,20 +121,15 @@ def sparse_collate_fn(batch):
     batched_labels = torch.as_tensor(label_list)
     batched_batch_labels = torch.as_tensor(batch_list)
     
-    # 返回4个元素，sample_ids 作为列表返回
     return batched_data, batched_labels, batched_batch_labels, sample_ids_list
 
 class AttnMoE_Dataset(Dataset):
-    """
-    为多示例学习（MIL）设计的增强型数据集。
-    此版本保留了原始逻辑，并增加了对 SampleIDs 的支持。
-    """
     def __init__(self, DataList, DataLabel, DataBatch, SampleIDs):
         super().__init__()
         self.DataList = DataList
         self.DataLabel = DataLabel
         self.DataBatch = DataBatch
-        self.SampleIDs = SampleIDs # 存储 SampleIDs
+        self.SampleIDs = SampleIDs 
         self.aligned_data_cache = {}
         
     def align_datalist(self, data, index):
