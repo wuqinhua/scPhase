@@ -77,7 +77,7 @@ To prepare your data into the required format, we recommend the following workfl
 
 ## Data Availability
 
-The datasets used in this study are available on Zenodo: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18059900.svg)](https://doi.org/10.5281/zenodo.18059900)
+All processed data, including trained models and interpretability metrics, have been deposited in Zenodo and can be accessed at: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18059900.svg)](https://doi.org/10.5281/zenodo.18059900)
 
 ## Usages
 
@@ -122,7 +122,7 @@ python run.py --config config.json --interpret
 
 ## Interpreting the Output
 
-All results are saved in the directory specified by `RESULTS_DIR`(https://doi.org/10.5281/zenodo.18059900). Key outputs include:
+All results are saved in the directory specified by `RESULTS_DIR`[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18059900.svg)](https://doi.org/10.5281/zenodo.18059900). Key outputs include:
 
 * **Trained Models**: The best model from each CV fold is saved as `BestModel_{MODEL_NAME}_Fold{N}.pt`.
 * **Performance Metrics**:
