@@ -18,7 +18,7 @@ The manuscript has been pre-printed in bioRxiv:
 
 #
 
-<img src="https://github.com/wuqinhua/scPhase/blob/main/notebooks/Figure1.png" alt="架构图" width="1200"/>
+<img src="https://github.com/wuqinhua/scPhase/blob/main/Figure1.png" alt="架构图" width="1200"/>
 
 ***
 
