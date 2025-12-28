@@ -300,7 +300,7 @@ def ensemble_cell_attentions(all_fold_attention_arrays, config, adata):
     adata.obs['attention_weight_std'] = attention_std
 
     output_path = os.path.join(config['path_params']['RESULTS_DIR'], 'ensemble_adata_with_attention.h5ad')
-    adata.write_h5ad(output_path)
+    adata.write_h5ad(output_path, compression='gzip')
     logger.info(f"Saved ensemble adata with attention weights to {output_path}")
     
  
