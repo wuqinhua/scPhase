@@ -48,6 +48,7 @@ pip install -r requirements.txt
 
 ***
 
+
 ## Dataset Requirements
 
 scPhase requires your single-cell data to be provided as a single, preprocessed **`.h5ad` file**. The `AnnData` object within this file must contain specific metadata in its `.obs` attribute for the model to function correctly.
@@ -72,6 +73,11 @@ To prepare your data into the required format, we recommend the following workfl
 
 
 ***
+
+
+## Data Availability
+
+The datasets used in this study are available on Zenodo: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18059900.svg)](https://doi.org/10.5281/zenodo.18059900)
 
 ## Usages
 
@@ -116,7 +122,7 @@ python run.py --config config.json --interpret
 
 ## Interpreting the Output
 
-All results are saved in the directory specified by `RESULTS_DIR`. Key outputs include:
+All results are saved in the directory specified by `RESULTS_DIR`(https://doi.org/10.5281/zenodo.18059900). Key outputs include:
 
 * **Trained Models**: The best model from each CV fold is saved as `BestModel_{MODEL_NAME}_Fold{N}.pt`.
 * **Performance Metrics**:
