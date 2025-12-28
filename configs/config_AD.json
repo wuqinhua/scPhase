@@ -1,0 +1,60 @@
+{
+  "path_params": {
+    "data_h5ad_file":"/data/wuqinhua/phase_1r/AD/AD_NatureNeuro_ADNC.h5ad",
+    "master_pickle_file":"",
+    "RESULTS_DIR": "/data/wuqinhua/scPhase/AD/",
+    "LOGNAME":"training_AD_interpret.log",
+    "MODEL_NAME":"AD"
+  },
+  "data_params":{
+    "sample_col": "sample_id",
+    "label_col": "phenotype",
+    "batch_col": "batch"
+  },
+  "run_params": {
+    "seed": 3407,
+    "skip_groups": [],
+    "device_model": "cuda:1",
+    "device_encoder": "cuda:3",
+    "task_type": "classification",
+    "num_folds": 5
+  },
+  "ablation_params": {
+    "use_moe": true,
+    "attention_type": "linformer",
+    "use_domain_adaptation": true
+  },
+  "training_params": {
+    "epochs": 150,
+    "batch_size": 1,
+    "num_workers": 4,
+    "early_stopping_patience":20,
+    "val_size": 0.1
+  },
+  "optimizer_params": {
+    "lr": 1e-5,
+    "weight_decay": 1e-4,
+    "betas": [0.9, 0.999],
+    "clip_grad_norm": 1.0
+  },
+  "scheduler_params": {
+    "warmup_epochs": 10
+  },
+  "model_params": {
+    "input_dim": 5000,
+    "encoder_dims": [1024, 512],
+    "classifier_dims": [128, 64],
+    "hidden_dim": 256,
+    "n_classes": 4,
+    "max_instances": 20000,
+    "instance_encoder_dropout_rates": [0.1, 0.1, 0.1],
+    "classifier_dropout_rates": [0.1, 0.1],
+    "instance_dropout_rate": 0.2,
+    "mha_dropout": 0.3,
+    "linformer_dropout": 0.3,
+    "num_heads": 8,
+    "linformer_k": 128,
+    "moe_num_experts": 8,
+    "moe_dropout": 0.2
+  }
+}
