@@ -13,8 +13,8 @@ The model incorporates several key architectural components to enhance performan
 
 Furthermore, scPhase includes a built-in interpretability framework that uses cellular attention and gene attribution scores (via Integrated Gradients) to identify the key cells and genes driving the phenotype predictions.
 
-The manuscript has been pre-printed in bioRxiv:
-> Qinhua Wu, Junxiang Ding, Ruikun He, Lijian Hui, Junwei Liu, Yixue Li. Exploring phenotype-related single-cells through attention-enhanced representation learning. *bioRxiv* (2024). [https://doi.org/10.1101/2024.10.31.619327](https://doi.org/10.1101/2024.10.31.619327)
+The manuscript has been published in Genome Medicine:
+> Qinhua Wu, Junxiang Ding, Ruikun He, Lijian Hui, Junwei Liu, Yixue Li. Exploring phenotype-related single-cells through attention-enhanced representation learning. *Genome Medicine* (2026). [https://link.springer.com/article/10.1186/s13073-026-01598-x](https://link.springer.com/article/10.1186/s13073-026-01598-x)
 
 #
 
